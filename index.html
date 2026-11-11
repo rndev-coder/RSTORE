@@ -1,0 +1,661 @@
+ 
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#100b1d">
+<title>RSTORE — Social Media Services</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0c0914;--panel:#171124;--panel2:#211632;
+  --purple:#a855f7;--pink:#ec4899;--text:#f8f4ff;
+  --muted:#b7abc9;--border:rgba(255,255,255,.1)
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:Arial,sans-serif;color:var(--text);min-height:100vh;
+  line-height:1.6;
+  background:radial-gradient(circle at 10% 0%,#42205d 0,transparent 35%),
+  radial-gradient(circle at 90% 20%,#401537 0,transparent 30%),var(--bg)
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{color:inherit}
+.container{width:min(1100px,92%);margin:auto}
+header{
+  padding:18px 0;border-bottom:1px solid var(--border);
+  background:rgba(12,9,20,.88);position:sticky;top:0;z-index:10;
+  backdrop-filter:blur(14px)
+}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.logo{
+  font-size:26px;font-weight:900;letter-spacing:2px;
+  background:linear-gradient(90deg,#d8b4fe,#f9a8d4);
+  -webkit-background-clip:text;color:transparent
+}
+.nav-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.nav-tag{color:#e9d5ff;font-size:12px;padding:6px 11px;border:1px solid #7043a3;border-radius:50px}
+.hero{padding:55px 0 35px;text-align:center}
+.eyebrow{color:#f0abfc;font-size:12px;font-weight:bold;letter-spacing:3px;margin-bottom:12px}
+h1{font-size:clamp(34px,7vw,58px);line-height:1.15;margin-bottom:16px}
+.gradient-text{
+  background:linear-gradient(90deg,#c084fc,#f472b6);
+  -webkit-background-clip:text;color:transparent
+}
+.hero p{max-width:620px;margin:auto;color:var(--muted)}
+.hero-buttons{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:24px}
+.btn{
+  border:0;border-radius:12px;padding:12px 18px;font-weight:bold;
+  text-decoration:none;display:inline-flex;align-items:center;justify-content:center;
+  gap:7px;transition:transform .2s,opacity .2s
+}
+.btn:hover{transform:translateY(-2px)}
+.primary{color:white;background:linear-gradient(100deg,var(--purple),var(--pink))}
+.secondary{color:white;background:var(--panel2);border:1px solid var(--border)}
+.whatsapp{color:#fff;background:#168b54}
+.section{padding:28px 0}
+.section-heading{margin-bottom:18px}
+.section-heading h2{font-size:25px}
+.section-heading p{color:var(--muted);font-size:14px;margin-top:4px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.stat{
+  background:rgba(255,255,255,.045);border:1px solid var(--border);
+  border-radius:15px;padding:16px;text-align:center
+}
+.stat strong{display:block;font-size:20px;color:#e9b7ff}
+.stat span{font-size:12px;color:var(--muted)}
+.panel{
+  background:rgba(23,17,36,.92);border:1px solid var(--border);
+  border-radius:18px;padding:20px;margin-bottom:18px
+}
+.filters{display:grid;grid-template-columns:1fr 220px;gap:12px}
+input,select,textarea{
+  width:100%;background:#100b1d;color:white;border:1px solid #453454;
+  border-radius:11px;padding:12px;outline:none
+}
+input:focus,select:focus,textarea:focus{border-color:var(--purple)}
+.category-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.category-btn{
+  border:1px solid var(--border);background:#20172e;color:#e9ddf7;
+  border-radius:50px;padding:8px 13px;font-size:13px
+}
+.category-btn.active{background:linear-gradient(100deg,var(--purple),var(--pink));border-color:transparent;color:white}
+.service-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.service-card{
+  display:flex;flex-direction:column;background:linear-gradient(145deg,#211631,#15101f);
+  border:1px solid var(--border);border-radius:16px;padding:17px;min-width:0
+}
+.service-category{color:#e9a8ff;font-size:11px;letter-spacing:1px;text-transform:uppercase;font-weight:bold}
+.service-card h3{font-size:16px;margin:8px 0;line-height:1.4}
+.price{color:#f9a8d4;font-size:19px;font-weight:900;margin-top:auto;padding:8px 0 12px}
+.service-card .btn{width:100%;margin-top:4px}
+.muted{color:var(--muted);font-size:13px}
+.empty{grid-column:1/-1;text-align:center;padding:30px;color:var(--muted)}
+.order-layout{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+.form-group{margin-bottom:14px}
+.form-group label{display:block;margin-bottom:6px;font-size:13px;color:#e9ddf7}
+textarea{min-height:90px;resize:vertical}
+.estimate{padding:14px;background:#100b1d;border:1px solid #453454;border-radius:12px;margin-bottom:14px}
+.estimate small{color:var(--muted);display:block}
+.estimate strong{display:block;font-size:24px;color:#f9a8d4;margin-top:3px}
+.notice{color:var(--muted);font-size:12px;margin-top:12px}
+.history-item{border-bottom:1px solid var(--border);padding:12px 0;font-size:13px}
+.history-item:last-child{border-bottom:0}
+footer{margin-top:30px;border-top:1px solid var(--border);padding:25px 0;text-align:center;color:var(--muted);font-size:12px}
+
+/* TOMBOL CHAT ADMIN */
+.chat-admin{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:#168b54;color:white;border:0;border-radius:12px;
+  padding:12px 18px;text-decoration:none;font-weight:bold;
+  transition:transform .2s,background .2s
+}
+.chat-admin:hover{transform:translateY(-2px);background:#117644}
+.chat-info{
+  background:rgba(22,139,84,.09);border:1px solid rgba(22,200,120,.22);
+  border-radius:14px;padding:15px;margin-top:15px
+}
+.chat-info h3{font-size:16px;margin-bottom:5px}
+.chat-info p{font-size:13px;color:var(--muted);margin-bottom:12px}
+.chat-number{font-size:13px;color:#a7f3d0;margin-top:7px}
+footer .chat-admin{margin-top:12px}
+
+@media(max-width:760px){
+  .service-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .order-layout{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  .filters{grid-template-columns:1fr}
+  .service-grid{grid-template-columns:1fr}
+  .stats{gap:7px}
+  .stat{padding:12px 5px}
+  .stat strong{font-size:17px}
+  .hero{padding-top:38px}
+  .panel{padding:15px}
+  .nav-tag{display:none}
+  .nav-right .btn{padding:9px 11px;font-size:12px}
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="container nav">
+    <a href="#" class="logo" style="text-decoration:none">RSTORE.</a>
+    <div class="nav-right">
+      <span class="nav-tag">SOCIAL MEDIA SERVICES</span>
+      <a class="chat-admin" data-chat="umum" href="#">💬 Chat Admin</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero container">
+    <div class="eyebrow">WELCOME TO RSTORE</div>
+    <h1>Boost Your Socials,<br><span class="gradient-text">Make It Shine.</span></h1>
+    <p>
+      pilih layanan yang kamu butuhkan, cek katalog, lalu pesan dengan mudah.
+      mau tanya-tanya dulu? langsung chat admin RSTORE melalui WhatsApp.
+    </p>
+    <div class="hero-buttons">
+      <a class="btn primary" href="#layanan">✦ Lihat Layanan</a>
+      <a class="btn secondary" href="#pesan">Pesan Sekarang</a>
+      <a class="chat-admin" data-chat="umum" href="#">💬 Chat Admin Dulu</a>
+    </div>
+  </section>
+
+  <section class="container section">
+    <div class="stats">
+      <div class="stat"><strong id="serviceCount">0</strong><span>Pilihan layanan</span></div>
+      <div class="stat"><strong>16+</strong><span>Platform tersedia</span></div>
+      <div class="stat"><strong>24/7</strong><span>Form pemesanan online</span></div>
+    </div>
+  </section>
+
+  <section id="layanan" class="container section">
+    <div class="section-heading">
+      <h2>✦ katalog layanan</h2>
+      <p>Cari layanan atau pilih kategori platform favoritmu.</p>
+    </div>
+
+    <div class="panel">
+      <div class="filters">
+        <input id="searchInput" type="search" placeholder="Cari layanan, misalnya followers..." aria-label="Cari layanan">
+        <select id="sortSelect" aria-label="Urutkan layanan">
+          <option value="default">Urutan default</option>
+          <option value="low">Harga termurah</option>
+          <option value="high">Harga termahal</option>
+          <option value="az">Nama A–Z</option>
+        </select>
+      </div>
+      <div id="categoryList" class="category-list"></div>
+    </div>
+
+    <div id="serviceGrid" class="service-grid"></div>
+  </section>
+
+  <section id="pesan" class="container section">
+    <div class="section-heading">
+      <h2>✦ pemesanan & bantuan</h2>
+      <p>Pesan layanan atau hubungi admin dulu kalau masih ada yang ingin ditanyakan.</p>
+    </div>
+
+    <div class="order-layout">
+      <div class="panel">
+        <form id="orderForm">
+          <div class="form-group">
+            <label for="serviceSelect">Pilih layanan</label>
+            <select id="serviceSelect" required>
+              <option value="">-- pilih layanan --</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="target">Link akun / postingan / target</label>
+            <input id="target" type="url" placeholder="https://..." required>
+          </div>
+
+          <div class="form-group">
+            <label for="quantity">Jumlah paket</label>
+            <input id="quantity" type="number" min="1" max="100" value="1" required>
+            <div class="notice">Jumlah paket berbeda dari jumlah followers/views pada nama paket.</div>
+          </div>
+
+          <div class="form-group">
+            <label for="notes">Catatan tambahan (opsional)</label>
+            <textarea id="notes" placeholder="Tulis catatan pesanan di sini..."></textarea>
+          </div>
+
+          <div class="estimate">
+            <small>Estimasi total</small>
+            <strong id="totalPrice">Pilih layanan</strong>
+            <small id="priceNote">Harga dapat dikonfirmasi kembali ke admin.</small>
+          </div>
+
+          <button class="btn primary" type="submit" style="width:100%">
+            🛒 Pesan via WhatsApp
+          </button>
+          <p class="notice">Pesanan baru dikirim setelah kamu menekan tombol kirim di WhatsApp. Jangan berikan password atau kode OTP akunmu.</p>
+        </form>
+
+        <div class="chat-info">
+          <h3>💬 Masih mau tanya dulu?</h3>
+          <p>Tanyakan harga, ketersediaan layanan, atau cara pemesanan kepada admin sebelum checkout.</p>
+          <a class="chat-admin" data-chat="tanya" href="#">Chat Admin Sekarang ↗</a>
+          <div class="chat-number">WhatsApp Admin: 083108839093</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3 style="margin-bottom:10px">✦ cara pemesanan</h3>
+        <p class="muted">01. Pilih layanan yang kamu inginkan.</p>
+        <p class="muted">02. Masukkan link target yang benar.</p>
+        <p class="muted">03. Tentukan jumlah paket dan isi catatan bila perlu.</p>
+        <p class="muted">04. Tekan tombol WhatsApp dan kirim pesan kepada admin.</p>
+
+        <div style="height:1px;background:var(--border);margin:18px 0"></div>
+
+        <h3 style="margin-bottom:8px">✦ riwayat di perangkat ini</h3>
+        <p class="muted">Riwayat berikut hanya tersimpan di browser perangkat ini, bukan di server.</p>
+        <div id="historyList" style="margin-top:10px">
+          <p class="muted">Belum ada pesanan
+          </p>
+        </div>
+        <button id="clearHistory" class="btn secondary" type="button" style="margin-top:12px">Hapus riwayat lokal</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="logo" style="font-size:21px;margin-bottom:5px">RSTORE.</div>
+    <p>Social Media Services · Order through WhatsApp</p>
+    <a class="chat-admin" data-chat="umum" href="#">💬 Chat AdminRE</a>
+    <p style="margin-top:7px">WhatsApp Admin: 083108839093</p>
+    <p style="margin-top:7px">© <span id="year"></span> RSTORE. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+/* NOMOR ADMIN RSTORE */
+const ADMIN_WA = "6283108839093";
+
+function chatAdmin(topik = "umum") {
+  const messages = {
+    umum: "Halo Admin RSTORE! Saya mau bertanya tentang layanan yang tersedia. Boleh minta informasinya?",
+    tanya: "Halo Admin RSTORE! Saya ingin bertanya dulu sebelum memesan. Bisa bantu jelaskan layanan, harga, dan ketentuannya?"
+  };
+  const message = messages[topik] || messages.umum;
+  return "https://wa.me/" + ADMIN_WA + "?text=" + encodeURIComponent(message);
+}
+
+/* Tombol chat di halaman utama, pemesanan, dan footer */
+document.querySelectorAll("[data-chat]").forEach(link => {
+  link.href = chatAdmin(link.dataset.chat);
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+});
+
+const categories = [
+  "Semua","Facebook","Instagram","LinkedIn","Pinterest","Roblox",
+  "Shopee","SnackVideo","Spotify","Telegram","Threads","TikTok",
+  "Tokopedia","Twitch","X / Twitter","WhatsApp","YouTube"
+];
+
+const services = [];
+function addService(category, name, price = null) {
+  services.push({id: services.length + 1, category, name, price});
+}
+function addPackages(category, title, packages) {
+  packages.forEach(([label, price]) => addService(category, `${title} ${label}`, price));
+}
+
+/* PAKET FYP */
+addService("TikTok", "TikTok FYP", 50000);
+addService("Instagram", "Instagram FYP", 40000);
+
+/* TIKTOK FOLLOWERS */
+addPackages("TikTok", "TikTok Followers", [
+  ["100",6000],["200",12000],["300",18000],["400",24000],
+  ["500",28000],["600",31000],["700",34000],["800",37000],
+  ["900",40000],["1000",50000]
+]);
+
+/* INSTAGRAM FOLLOWERS */
+addPackages("Instagram", "Instagram Followers", [
+  ["100",5000],["200",10000],["300",15000],["400",20000],
+  ["500",24000],["600",28000],["700",31000],["800",34000],
+  ["900",37000],["1000",40000]
+]);
+
+/* TIKTOK VIEWS */
+addPackages("TikTok", "TikTok Views", [
+  ["1K",2000],["2K",4000],["3K",5000],["5K",8000],
+  ["10K",15000],["20K",25000],["50K",40000],["100K",70000],
+  ["200K",130000],["500K",300000],["1M",550000]
+]);
+
+/* INSTAGRAM LIKES */
+addPackages("Instagram", "Instagram Likes", [
+  ["1K",4000],["2K",7000],["3K",10000],["5K",16000],
+  ["10K",30000],["20K",50000]
+]);
+
+/* TIKTOK LIKES */
+addPackages("TikTok", "TikTok Likes", [
+  ["100",2000],["200",4000],["300",6000],["500",10000],
+  ["1K",15000],["2K",24000],["3K",32000],["5K",50000]
+]);
+
+/* WHATSAPP CHANNEL MEMBERS */
+addPackages("WhatsApp", "WhatsApp Channel Member", [
+  ["50",5000],["100",7000],["200",14000],["300",20000],
+  ["400",26000],["500",33000],["600",38000],["700",44000],
+  ["800",55000],["900",65000],["1000",60000]
+]);
+
+/* WHATSAPP POLL VOTES */
+addPackages("WhatsApp", "WhatsApp Poll Votes", [
+  ["50",4000],["100",6000],["200",11000],["300",19000],
+  ["400",24000],["500",30000],["600",35000],["700",40000],
+  ["800",44000],["900",50000],["1000",55000]
+]);
+
+/* LAYANAN LAIN: HARGA DIKONFIRMASI ADMIN */
+const catalog = {
+  "Facebook":[
+    "Followers","Likes","Page Likes","Post Likes","Comments","Shares",
+    "Views","Video Views","Live Views","Reactions","Story Views",
+    "Group Members","Friends","Page Followers","Post Comments","Video Likes",
+    "Watch Time","Engagement","Review","Rating","Mentions","Profile Visits",
+    "Live Reactions","Post Shares","Custom Comments"
+  ],
+  "Instagram":[
+    "Followers","Likes","Views","Comments","Story Views","Reels Views",
+    "Live Viewers","Saves","Shares","Reach","Impressions","Profile Visits",
+    "Engagement","Reels Likes","Reels Comments","Story Likes","Story Replies",
+    "Highlights Views","IGTV Views","Broadcast Members","Poll Votes",
+    "Question Votes","Link Clicks","Custom Comments","Mentions","Auto Likes"
+  ],
+  "LinkedIn":["Followers","Post Likes"],
+  "Pinterest":["Followers"],
+  "Roblox":["Robux","Game Pass"],
+  "Shopee":["Followers","Product Likes","Product Views","Live Streaming Views","Shop Visits","Reviews"],
+  "SnackVideo":["Followers","Video Likes"],
+  "Spotify":["Monthly Listeners","Plays","Followers","Playlist Followers"],
+  "Telegram":["Channel Members","Group Members","Post Views","Reactions","Votes","Comments"],
+  "Threads":["Followers","Likes"],
+  "TikTok":[
+    "Followers","Likes","Views","Shares","Comments","Live Viewers","Live Likes",
+    "Favorites","Profile Visits","Video Shares","Story Views","Story Likes",
+    "Post Saves","Custom Comments","Live Reactions","Video Engagement",
+    "Repost","Live Followers","Mentions","Auto Likes","Poll Votes","Profile Likes"
+  ],
+  "Tokopedia":["Store Followers"],
+  "Twitch":["Followers"],
+  "X / Twitter":[
+    "Followers","Likes","Views","Retweets","Comments","Post Impressions",
+    "Video Views","Profile Visits","Bookmarks"
+  ],
+  "WhatsApp":["Channel Followers"],
+  "YouTube":[
+    "Subscribers","Views","Likes","Comments","Shorts Views","Live Viewers",
+    "Watch Hours","Shares","Playlist Views","Channel Views","Community Likes",
+    "Custom Comments"
+  ]
+};
+
+Object.entries(catalog).forEach(([category, names]) => {
+  names.forEach(name => {
+    const fullName = `${category} ${name}`;
+    const exists = services.some(s =>
+      s.category === category && s.name.toLowerCase() === fullName.toLowerCase()
+    );
+    if (!exists) addService(category, fullName, null);
+  });
+});
+
+const money = value => new Intl.NumberFormat("id-ID", {
+  style:"currency",currency:"IDR",maximumFractionDigits:0
+}).format(value);
+
+const searchInput = document.getElementById("searchInput");
+const sortSelect = document.getElementById("sortSelect");
+const categoryList = document.getElementById("categoryList");
+const serviceGrid = document.getElementById("serviceGrid");
+const serviceSelect = document.getElementById("serviceSelect");
+const quantityInput = document.getElementById("quantity");
+const totalPrice = document.getElementById("totalPrice");
+const priceNote = document.getElementById("priceNote");
+
+let activeCategory = "Semua";
+document.getElementById("serviceCount").textContent = services.length;
+document.getElementById("year").textContent = new Date().getFullYear();
+
+function renderCategories() {
+  categoryList.innerHTML = "";
+  categories.forEach(category => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "category-btn" + (category === activeCategory ? " active" : "");
+    button.textContent = category;
+    button.addEventListener("click", () => {
+      activeCategory = category;
+      renderCategories();
+      renderServices();
+    });
+    categoryList.appendChild(button);
+  });
+}
+
+function getFilteredServices() {
+  const query = searchInput.value.trim().toLowerCase();
+  let result = services.filter(service => {
+    const categoryMatch = activeCategory === "Semua" || service.category === activeCategory;
+    const textMatch = service.name.toLowerCase().includes(query) ||
+      service.category.toLowerCase().includes(query);
+    return categoryMatch && textMatch;
+  });
+
+  if (sortSelect.value === "low") {
+    result.sort((a,b) => (a.price ?? Infinity) - (b.price ?? Infinity));
+  } else if (sortSelect.value === "high") {
+    result.sort((a,b) => (b.price ?? -Infinity) - (a.price ?? -Infinity));
+  } else if (sortSelect.value === "az") {
+    result.sort((a,b) => a.name.localeCompare(b.name));
+  }
+  return result;
+}
+
+function renderServices() {
+  serviceGrid.innerHTML = "";
+  const result = getFilteredServices();
+
+  if (!result.length) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = "Layanan tidak ditemukan. Coba kata kunci lain.";
+    serviceGrid.appendChild(empty);
+    return;
+  }
+
+  result.forEach(service => {
+    const card = document.createElement("article");
+    card.className = "service-card";
+
+    const category = document.createElement("div");
+    category.className = "service-category";
+    category.textContent = service.category;
+
+    const title = document.createElement("h3");
+    title.textContent = service.name;
+
+    const price = document.createElement("div");
+    price.className = "price";
+    price.textContent = service.price === null ? "Konfirmasi admin" : money(service.price);
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "btn primary";
+    button.textContent = "Pilih layanan";
+    button.addEventListener("click", () => {
+      serviceSelect.value = String(service.id);
+      updateEstimate();
+      document.getElementById("pesan").scrollIntoView({behavior:"smooth"});
+    });
+
+    card.append(category,title,price,button);
+    serviceGrid.appendChild(card);
+  });
+}
+
+services.forEach(service => {
+  const option = document.createElement("option");
+  option.value = String(service.id);
+  option.textContent = service.name + (
+    service.price === null ? " — konfirmasi admin" : " — " + money(service.price)
+  );
+  serviceSelect.appendChild(option);
+});
+
+function getSelectedService() {
+  return services.find(service => service.id === Number(serviceSelect.value));
+}
+
+function updateEstimate() {
+  const service = getSelectedService();
+  const quantity = Math.max(1, Number(quantityInput.value) || 1);
+
+  if (!service) {
+    totalPrice.textContent = "Pilih layanan";
+    priceNote.textContent = "Harga dapat dikonfirmasi kembali ke admin.";
+    return;
+  }
+
+  if (service.price === null) {
+    totalPrice.textContent = "Konfirmasi admin";
+    priceNote.textContent = "Admin akan memberikan harga untuk layanan ini.";
+    return;
+  }
+
+  totalPrice.textContent = money(service.price * quantity);
+  priceNote.textContent = `${money(service.price)} per paket × ${quantity} paket`;
+}
+
+searchInput.addEventListener("input",renderServices);
+sortSelect.addEventListener("change",renderServices);
+serviceSelect.addEventListener("change",updateEstimate);
+quantityInput.addEventListener("input",updateEstimate);
+
+function getHistory() {
+  try {
+    return JSON.parse(localStorage.getItem("rstoreHistory") || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function saveHistory(item) {
+  const history = getHistory();
+  history.unshift(item);
+  try {
+    localStorage.setItem("rstoreHistory",JSON.stringify(history.slice(0,10)));
+  } catch {}
+  renderHistory();
+}
+
+function renderHistory() {
+  const list = document.getElementById("historyList");
+  const history = getHistory();
+  list.innerHTML = "";
+
+  if (!history.length) {
+    const empty = document.createElement("p");
+    empty.className = "muted";
+    empty.textContent = "Belum ada pesanan dari formulir ini.";
+    list.appendChild(empty);
+    return;
+  }
+
+  history.forEach(item => {
+    const entry = document.createElement("div");
+    entry.className = "history-item";
+
+    const name = document.createElement("strong");
+    name.textContent = item.name;
+
+    const details = document.createElement("p");
+    details.className = "muted";
+    details.textContent = `${item.quantity} paket · ${item.total} · ${item.date}`;
+
+    entry.append(name,details);
+    list.appendChild(entry);
+  });
+}
+
+document.getElementById("clearHistory").addEventListener("click",() => {
+  if (confirm("Hapus riwayat lokal di browser ini?")) {
+    localStorage.removeItem("rstoreHistory");
+    renderHistory();
+  }
+});
+
+document.getElementById("orderForm").addEventListener("submit",event => {
+  event.preventDefault();
+
+  const service = getSelectedService();
+  if (!service) {
+    alert("Silakan pilih layanan terlebih dahulu.");
+    return;
+  }
+
+  const target = document.getElementById("target").value.trim();
+  const quantity = Math.max(1,Number(quantityInput.value) || 1);
+  const notes = document.getElementById("notes").value.trim();
+
+  if (quantity > 100) {
+    alert("Maksimal 100 paket per formulir. Hubungi admin jika ingin lebih.");
+    return;
+  }
+
+  const totalText = service.price === null
+    ? "Konfirmasi admin"
+    : money(service.price * quantity);
+
+  const message = [
+    "Halo Admin RSTORE, saya ingin memesan layanan.",
+    "",
+    "Layanan: " + service.name,
+    "Link target: " + target,
+    "Jumlah paket: " + quantity,
+    "Harga per paket: " + (service.price === null ? "Konfirmasi admin" : money(service.price)),
+    "Estimasi total: " + totalText,
+    "Catatan: " + (notes || "-"),
+    "",
+    "Mohon konfirmasi harga dan ketentuan layanan sebelum diproses. Terima kasih."
+  ].join("\n");
+
+  saveHistory({
+    name:service.name,
+    quantity,
+    total:totalText,
+    date:new Date().toLocaleString("id-ID")
+  });
+
+  const whatsappURL = "https://wa.me/" + ADMIN_WA + "?text=" + encodeURIComponent(message);
+  const opened = window.open(whatsappURL,"_blank");
+
+  if (!opened) window.location.href = whatsappURL;
+});
+
+renderCategories();
+renderServices();
+renderHistory();
+updateEstimate();
+</script>
+</body>
+</html>
